@@ -18,10 +18,7 @@
 		<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 		<!-- Font Awesome CSS -->
 		<link rel="stylesheet" href="assets/fonts/font-awesome.min.css">
-		<link rel="stylesheet" href="assets/fonts/themify-icons.css">
-		<!--- owl carousel Css-->
-		<link rel="stylesheet" href="assets/owlcarousel/css/owl.carousel.css">
-		<link rel="stylesheet" href="assets/owlcarousel/css/owl.theme.css">				
+		<link rel="stylesheet" href="assets/fonts/themify-icons.css">			
 		<!--slicknav Css-->
         <link rel="stylesheet" href="assets/css/slicknav.css">		
 		<!-- MAGNIFIC CSS -->
@@ -184,35 +181,41 @@
 							<h2>Send your message.</h2>
 						</div>							
 						<div class="contact">
-							<form class="form" name="enq" method="post" action="contact.php" onsubmit="return validation();">
+							<form id="contact_form" class="form">
 								<div class="row">
+
 									<div class="form-group col-md-6">
-										<label for="">Name</label>
-										<input type="text" name="name" class="form-control" required="required">
+										<label>Name</label>
+										<input type="text" id="name" class="form-control" required>
 									</div>
+
 									<div class="form-group col-md-6">
-										<label for="">Your Email</label>
-										<input type="email" name="email" class="form-control" required="required">
+										<label>Your Email</label>
+										<input type="email" id="email" class="form-control" required>
 									</div>
+
 									<div class="form-group col-md-12">
-										<label for="">Your Subject</label>
-										<input type="text" name="subject" class="form-control" required="required">
+										<label>Phone Number</label>
+										<input type="text" id="phone" class="form-control">
 									</div>
+
 									<div class="form-group col-md-12">
-										<label for="">Your Message</label>
-										<textarea rows="6" name="message" class="form-control" required="required"></textarea>
+										<label>Your Message</label>
+										<textarea rows="6" id="message" class="form-control" required></textarea>
 									</div>
+
 									<div class="col-md-12 text-center">
-										<button type="submit" value="Send message" name="submit" id="submitButton" class="btn_one" title="Submit Your Message!">Send Message</button>
+										<button type="submit" class="btn_one">Send Message</button>
 									</div>
+
 								</div>
 							</form>
 						</div>
 					</div><!-- END COL  -->
-					<div class="col-lg-5 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">		<div class="map">
+					<!-- <div class="col-lg-5 col-sm-12 col-xs-12 wow fadeInUp" data-wow-duration="1s" data-wow-delay="0.2s" data-wow-offset="0">		<div class="map">
 							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3023.957183635167!2d-74.00402768559431!3d40.71895904512855!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c2598a1316e7a7%3A0x47bb20eb6074b3f0!2sNew%20Work%20City%20-%20(CLOSED)!5e0!3m2!1sbn!2sbd!4v1600305497356!5m2!1sbn!2sbd" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
 						</div>					
-					</div><!-- END COL  -->				
+					</div>END COL -->
 				</div><!-- END ROW -->				
 			</div><!--- END CONTAINER -->
 		</div>
@@ -300,20 +303,112 @@
 	<!-- Latest jQuery -->
 		<script src="assets/js/jquery-1.12.4.min.js"></script>
 	<!-- Latest compiled and minified Bootstrap -->
-		<script src="assets/bootstrap/js/bootstrap.min.js"></script>			
-	<!-- owl-carousel min js  -->
-		<script src="assets/owlcarousel/js/owl.carousel.min.js"></script>	
+		<script src="assets/bootstrap/js/bootstrap.min.js"></script>				
 	<!-- jquery.slicknav -->
 		<script src="assets/js/jquery.slicknav.js"></script>			
 	<!-- magnific-popup js -->               
 		<script src="assets/js/jquery.magnific-popup.min.js"></script>	
-	<!-- simple-text-rotator.min.js  -->
-		<script src="assets/simple-text-rotator/js/jquery.simple-text-rotator.min.js"></script>		
 	<!-- scrolltopcontrol js -->
 		<script src="assets/js/scrolltopcontrol.js"></script>		
 	<!-- WOW - Reveal Animations When You Scroll -->
 		<script src="assets/js/wow.min.js"></script>				
 	<!-- scripts js -->	
-		<script src="assets/js/scripts.js"></script>				
+		<script src="assets/js/scripts.js"></script>
+
+		<script>
+$(document).ready(function () {
+
+    $("#contact_form").on("submit", function (e) {
+        e.preventDefault();
+
+        const data = {
+            domain: window.location.hostname.replace(/^www\./, ''),
+            Name: $("#name").val().trim(),
+            email: $("#email").val().trim(),
+            phone: $("#phone").val().trim(),
+            message: $("#message").val().trim()
+        };
+
+        if (!data.Name || !data.email || !data.message) {
+            alert("Please fill all required fields.");
+            return;
+        }
+
+        $.ajax({
+            url: "https://api.fundsweb.in/api/v1/contactus/add",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(data),
+
+            success: function () {
+                alert("Message sent successfully!");
+                $("#contact_form")[0].reset();
+            },
+
+            error: function (xhr, status, error) {
+                console.error("Form submission error:", error);
+                alert("Failed to send message. Please try again later.");
+            }
+        });
+    });
+
+});
+</script>
+
+    <script>
+      $(document).ready(function () {
+         if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
+            console.log("Skipping GTAG — running on localhost");
+            return;
+        }
+        
+        function getCleanUrl() {
+          let protocol = "https:";
+          let hostname = window.location.hostname;
+
+          hostname = hostname.replace(/^www\./, '');
+
+          return `${protocol}//${hostname}`;
+        }
+
+        const cleanUrl = getCleanUrl();
+        console.log('Clean URL:', cleanUrl);
+
+        $.ajax({
+          url: 'https://api.fundsweb.in/api/v1/user/gtag-by-domain',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            websiteUrl: cleanUrl
+          }),
+          success: function (response) {
+            console.log("gtag for client:", response);
+            const gcode = response.measurementId;
+
+            if (response.seoKeywords) {
+              $('meta[name="description"]').attr('content', response.seoKeywords);
+              console.log("Meta description updated with:", response.seoKeywords);
+            }
+
+            if (gcode) {
+
+              const gtagScript = document.createElement('script');
+              gtagScript.setAttribute('async', '');
+              gtagScript.src = `https://www.googletagmanager.com/gtag/js?id=${gcode}`;
+              document.head.appendChild(gtagScript);
+
+              window.dataLayer = window.dataLayer || [];
+              function gtag() { dataLayer.push(arguments); }
+              window.gtag = gtag;
+              gtag('js', new Date());
+              gtag('config', gcode);
+            }
+          },
+          error: function (err) {
+            console.error('Error fetching gtag code:', err);
+          }
+        });
+      });
+    </script>			
 </body>
 </html>
