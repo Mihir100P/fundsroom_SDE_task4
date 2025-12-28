@@ -3249,6 +3249,7 @@ margin-bottom:60px;
 * 16.START SECTION TOP DESIGN
 * ----------------------------------------------------------------------------------------
 */
+
 .section-top {
 	padding-top: 200px;
 	position: relative;
@@ -3266,6 +3267,7 @@ margin-bottom:60px;
 .section-top-title {
 	position: relative;
 }
+
 @media only screen and (max-width:480px) { 
     .section-top-title { width: 100% }
 }
@@ -3289,6 +3291,7 @@ margin-bottom:60px;
 .section-top-title ul li {color: #1a2d62 !important;display: inline-block; }
 .section-top-title ul li a { color: #4d54fd!important;font-weight: 600; }
 .section-top-title ul li a:hover { color: #1a2d62!important }
+
 /*
 * ----------------------------------------------------------------------------------------
 * 16.END SECTION TOP DESIGN
