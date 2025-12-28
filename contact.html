@@ -315,44 +315,47 @@
 	<!-- scripts js -->	
 		<script src="assets/js/scripts.js"></script>
 
-		<script>
-$(document).ready(function () {
+		  <script>
+// store just the hostname
+(function(){
+  console.log("Binding contact form…");
+  const host = new URL(location.href).hostname;
+  sessionStorage.setItem("baseDomain", host);
 
-    $("#contact_form").on("submit", function (e) {
-        e.preventDefault();
-
-        const data = {
-            domain: window.location.hostname.replace(/^www\./, ''),
-            Name: $("#name").val().trim(),
-            email: $("#email").val().trim(),
-            phone: $("#phone").val().trim(),
-            message: $("#message").val().trim()
-        };
-
-        if (!data.Name || !data.email || !data.message) {
-            alert("Please fill all required fields.");
-            return;
-        }
-
-        $.ajax({
-            url: "https://api.fundsweb.in/api/v1/contactus/add",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(data),
-
-            success: function () {
-                alert("Message sent successfully!");
-                $("#contact_form")[0].reset();
-            },
-
-            error: function (xhr, status, error) {
-                console.error("Form submission error:", error);
-                alert("Failed to send message. Please try again later.");
-            }
-        });
+  function submitContactForm(e) {
+    e.preventDefault();
+    console.log("submitContactForm fired");
+    const data = {
+      //domain:  sessionStorage.getItem("baseDomain") || "",
+	 domain: "fundsmintindia.com",
+      Name:    $("#name").val().trim(),
+      email:   $("#email").val().trim(),
+      phone:   $("#phone").val().trim(),
+      message: $("#message").val().trim()
+    };
+    console.log("Posting data:", data);
+	console.log("Contact script loaded, jQuery version:", $.fn.jquery);
+    $.ajax({
+      url: "https://api.fundsweb.in/api/v1/contactus/add",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify(data),
+      success() {
+        alert("Message sent successfully!");
+        $("#contact_form")[0].reset();
+      },
+      error: function(xhr, status, err) {
+        console.error("Error submitting form:", err);
+        alert("There was an error sending your message.");
+      }
     });
+  }
 
-});
+  // wire it up
+  $(function(){
+    $("#contact_form").on("submit", submitContactForm);
+  });
+})();
 </script>
 
     <script>
